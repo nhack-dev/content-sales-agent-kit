@@ -1,0 +1,5 @@
+.env
+products/
+data/funnel.csv
+__pycache__/
+*.pyc

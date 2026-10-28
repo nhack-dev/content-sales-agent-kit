@@ -1,0 +1,30 @@
+{
+  "note": "line-agent-kit の config/flow.json の scenarios に足す型。{{ID}} の商品へ自然につなぐ7日分。本文は brief.md から書く。差し込み（{pay_url} など）は使えないので、購入は buy=<id> のボタンにする",
+  "scenario": {
+    "id": "edu-{{ID}}",
+    "start": "follow",
+    "stop_if_tags": ["buyer:{{ID}}"],
+    "steps": [
+      { "after_days": 1, "at": "19:00", "messages": ["【1】いまのつまずきを言い当てる（誰の・どの場面）＋今日できる小さな一手"] },
+      { "after_days": 2, "at": "19:00", "messages": ["【2】よくある失敗と、その理由（読者のせいではないと伝える）"] },
+      { "after_days": 3, "at": "19:00", "messages": ["【3】全体の地図（何から順にやればよいか）"] },
+      { "after_days": 4, "at": "19:00", "messages": ["【4】実例（条件つき・出どころつき）"] },
+      { "after_days": 5, "at": "19:00", "messages": [
+        "【5】ここまでの内容をまとめた「{{TITLE}}」をご用意しました。中身・値段・お届けの方法はボタンから見られます",
+        { "type": "template", "altText": "{{TITLE}}のご案内", "template": { "type": "buttons", "text": "{{TITLE}}", "actions": [ { "type": "postback", "label": "詳しく見る", "data": "buy={{ID}}" } ] } }
+      ] },
+      { "after_days": 6, "at": "19:00", "messages": ["【6】よくある質問（返品・届く時期・合わなかったら）"] },
+      { "after_days": 7, "at": "19:00", "messages": ["【7】これからも役に立つ情報を送ります。配信がいらないときは「配信停止」と送ってください"] }
+    ]
+  },
+  "product": {
+    "id": "{{ID}}",
+    "name": "{{TITLE}}",
+    "payment_link_url": "https://buy.stripe.com/XXXX",
+    "payment_link_id": "plink_XXXX",
+    "buy_words": ["購入"],
+    "buy_reply": ["「{name}」のお申し込みはこちらです。\n{pay_url}\n\n特定商取引法にもとづく表記：https://example.com/legal"],
+    "add_tags": ["buyer:{{ID}}"],
+    "delivery": ["ご購入ありがとうございます。「{name}」はこちらからお受け取りください。\n（期限つきのリンク・会員ページ）\n\nお困りのときはこのトークにそのまま送ってください。"]
+  }
+}
